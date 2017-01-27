@@ -133,10 +133,10 @@ class MISP(Report):
 
             event = self.misp.new_event(distribution, threat_level_id, analysis, comment, date=datetime.now().strftime('%Y-%m-%d'), published=True)
 
-        if tag:
-            tagged = self.misp.add_tag(event, tag)
-        if tagged.has_key('message'):
-            log.warning("Cannot tag event: %s" % tagged['message'])
+            if tag:
+                tagged = self.misp.add_tag(event, tag)
+            if tagged.has_key('message'):
+                log.warning("Cannot tag event: %s" % tagged['message'])
 
             # Add Payload delivery hash about the details of the analyzed file
             self.misp.add_hashes(event, category='Payload delivery',
