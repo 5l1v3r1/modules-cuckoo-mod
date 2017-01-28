@@ -17,20 +17,22 @@ from lib.cuckoo.common.abstracts import Signature
 
 class DarktrackMutex(Signature):
     name = "rat_darktrack"
-    description = "Creates known Darktrack RAT mutex"
+    description = "Creates Darktrack RAT mutex"
     severity = 3
     categories = ["rat"]
     families = ["darktrack"]
     authors = ["Daniel Gallagher"]
     minimum = "1.2"
 
-    def on_complete(self):
+    def run(self):
         indicators = [
             "I_AM_DT[a-zA-Z]{8}",
         ]
 
         for indicator in indicators:
-            if self.check_mutex(pattern=indicator, regex=True):
+            match = self.check_mutex(pattern=indicator, regex=True)
+            if match:
+                self.data.append({"Mutex": match})
                 return True
 
         return False
